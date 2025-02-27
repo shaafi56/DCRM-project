@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+<a href="{% url 'leads:lead-list'%}">Back to List</a>
+<hr/>
+    <h1>create forms </h1>
+    <form method="post">
+    <!-- CSRF Token (Cross-Site Request Forgery) IS Required for POST Request (Security) -->
+    {% csrf_token %}
+    {{form.as_p}}
+    <button type="submit">Create</button>
+    </form>
+{% endblock content %}
