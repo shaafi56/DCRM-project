@@ -1,6 +1,6 @@
-from django.shortcuts import render , redirect
+from django.shortcuts import render , redirect , reverse
 from leads.forms import LeadForm, LeadModelForm
-from django.views.generic import TemplateView, ListView, DetailView
+from django.views.generic import TemplateView, ListView, DetailView, CreateView , UpdateView , DeleteView
 from .models import lead , Agent
 from django.http import HttpResponse
 
@@ -36,6 +36,13 @@ def lead_detail(request, pk):
     }
     return render(request, "leads/lead_detail.html",context)
 
+class leadCreateView(CreateView):
+    template_name = "leads/create_froms.html"
+    form_class = LeadModelForm
+
+    def get_success_url(self):
+        return reverse("leads:lead-list")
+
 #lead create function to create the lead details
 def create_froms(request):
     form = LeadModelForm()
@@ -49,6 +56,14 @@ def create_froms(request):
         "form" : form
     }
     return render(request, "leads/create_froms.html",context)
+
+class leadUpdateView(UpdateView):
+    template_name = "leads/lead_update.html"
+    queryset = lead.objects.all()
+    form_class = LeadModelForm
+    
+    def get_success_url(self):
+        return reverse("leads:lead-list")
 
 #lead update function to update the lead details
 def lead_update(request, pk):
@@ -64,6 +79,13 @@ def lead_update(request, pk):
         "lead" : Lead
     }
     return render(request, "leads/lead_update.html",context)
+
+class leadDeleteView(DeleteView):
+    template_name = "leads/lead_delete.html"
+    queryset = lead.objects.all()
+    
+    def get_success_url(self):
+        return reverse("leads:lead-list")
 
 #lead delete function to delete the lead details
 def lead_delete(request, pk):
